@@ -1,6 +1,5 @@
 # Arbol elemental con libreria  rpart
 # Debe tener instaladas las librerias  data.table  ,  rpart  y  rpart.plot
-#install.packages("rpart.plot")
 
 # cargo las librerias que necesito
 require("data.table")
@@ -8,7 +7,7 @@ require("rpart")
 require("rpart.plot")
 
 # Aqui se debe poner la carpeta de la materia de SU computadora local
-setwd("/Users/mpb/Desktop/Maestrìa/7-Laboratorio_de_implemetacion_I/") # Establezco el Working Directory
+setwd("/Users/mpb/Desktop/Maestrìa/7-Laboratorio_de_implemetacion_I/") # Establezco el Working Directory
 
 # cargo el dataset
 dataset <- fread("./datasets/dataset_pequeno.csv")
@@ -22,12 +21,11 @@ modelo <- rpart(
         formula = "clase_ternaria ~ .",
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
-        cp = -0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 0, # minima cantidad de registros para que se haga el split
-        minbucket = 20, # tamaño minimo de una hoja
-        maxdepth = 5
+        cp = -0.001, # esto significa no limitar la complejidad de los splits
+        minsplit = 50, # minima cantidad de registros para que se haga el split
+        minbucket = 100, # tamaño minimo de una hoja
+        maxdepth = 8
 ) # profundidad maxima del arbol
-
 
 # grafico el arbol
 prp(modelo,
@@ -61,6 +59,6 @@ dir.create("./exp/KA2001")
 
 # solo los campos para Kaggle
 fwrite(dapply[, list(numero_de_cliente, Predicted)],
-        file = "./exp/KA2001/K101_001_peral.csv",
+        file = "./exp/KA2001/K101_001_19_binario.csv",
         sep = ","
 )
